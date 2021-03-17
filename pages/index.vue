@@ -9,12 +9,12 @@
       :isDark="clickCount % 2 === 0"
     />
 
-    <div>
+    <div class="pb-4">
       <PageTitle>Início</PageTitle>
 
       <p>Olá mundo!</p>
 
-      <img :src="weatherImage" alt="Dia ensolarado">
+      <img :src="weatherImage" alt="Dia ensolarado" class="object-cover w-56">
 
       <div class="my-2">
         <button
@@ -25,11 +25,12 @@
         </button>
       </div>
 
-      <input type="text" v-model="name" placeholder="Qual seu nome?">
-
-      <nuxt-link to="/sobre-nos" :class="linkClasses">
-        Saiba mais sobre nós
-      </nuxt-link>
+      <div class="py-4">
+        <input type="text" v-model="name" placeholder="Qual seu nome?">
+        <nuxt-link to="/sobre-nos" :class="linkClasses">
+          Saiba mais sobre nós
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
