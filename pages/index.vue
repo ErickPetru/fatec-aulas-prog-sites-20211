@@ -1,5 +1,5 @@
 <template>
-  <div class="flex space-x-4 px-4">
+  <div id="page" class="flex px-4 space-x-4">
     <SideMenu
       :items="[
         { link: '/artigos', text: 'Artigos' },
@@ -14,10 +14,12 @@
 
       <p>Olá mundo!</p>
 
+      <img src="~/assets/img/weather-sunny.jpg" alt="Dia ensolarado">
+
       <div class="my-2">
         <button
           @click="increment"
-          class="bg-gray-500 px-6 py-1 rounded"
+          class="px-6 py-1 bg-gray-500 rounded"
         >
           Clique-me
         </button>
@@ -57,5 +59,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#page {
+  background-image: url('~/assets/img/weather-rainy.jpg');
+}
 </style>
