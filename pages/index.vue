@@ -9,12 +9,12 @@
       :isDark="clickCount % 2 === 0"
     />
 
-    <div>
+    <div class="pb-4">
       <PageTitle>Início</PageTitle>
 
       <p>Olá mundo!</p>
 
-      <img src="~/assets/img/weather-sunny.jpg" alt="Dia ensolarado">
+      <img :src="weatherImage" alt="Dia ensolarado" class="object-cover w-56">
 
       <div class="my-2">
         <button
@@ -25,11 +25,12 @@
         </button>
       </div>
 
-      <input type="text" v-model="name" placeholder="Qual seu nome?">
-
-      <nuxt-link to="/sobre-nos" :class="linkClasses">
-        Saiba mais sobre nós
-      </nuxt-link>
+      <div class="py-4">
+        <input type="text" v-model="name" placeholder="Qual seu nome?">
+        <nuxt-link to="/sobre-nos" :class="linkClasses">
+          Saiba mais sobre nós
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +50,14 @@ export default {
       } else {
         return 'underline text-red-500'
       }
+    },
+
+    weatherImage() {
+      if (this.name) {
+        return require('~/assets/img/weather-sunny.jpg')
+      } else {
+        return require('~/assets/img/weather-rainy.jpg')
+      }
     }
   },
   methods: {
@@ -58,9 +67,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#page {
-  background-image: url('~/assets/img/weather-rainy.jpg');
-}
-</style>
