@@ -14,7 +14,7 @@
 
       <p>Olá mundo!</p>
 
-      <img src="~/assets/img/weather-sunny.jpg" alt="Dia ensolarado">
+      <img :src="weatherImage" alt="Dia ensolarado">
 
       <div class="my-2">
         <button
@@ -49,6 +49,14 @@ export default {
       } else {
         return 'underline text-red-500'
       }
+    },
+
+    weatherImage() {
+      if (this.name) {
+        return require('~/assets/img/weather-sunny.jpg')
+      } else {
+        return require('~/assets/img/weather-rainy.jpg')
+      }
     }
   },
   methods: {
@@ -58,9 +66,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#page {
-  background-image: url('~/assets/img/weather-rainy.jpg');
-}
-</style>
