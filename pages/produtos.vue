@@ -17,8 +17,8 @@
     </div>
 
     <nav>
-      <a href="#1" @click.prevent="goToPage(1)">1</a>
-      <a href="#2" @click.prevent="goToPage(2)">2</a>
+      <nuxt-link to="?page=1">1</nuxt-link>
+      <nuxt-link to="?page=2">2</nuxt-link>
     </nav>
   </div>
 </template>
@@ -59,9 +59,13 @@ export default {
     }
   },
 
-  methods: {
-    goToPage(n) {
-      this.currentPage = n
+  watch: {
+    '$route.query': {
+      immediate: true,
+
+      handler (query) {
+        this.currentPage = query.page
+      }
     }
   }
 }
