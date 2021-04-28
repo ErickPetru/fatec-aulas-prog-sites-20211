@@ -14,6 +14,11 @@
         </nuxt-link>
       </li>
       <li>
+        <nuxt-link to="/tarefas" class="block p-3 rounded bg-blue-500 hover:bg-blue-800 transition-all">
+          Tarefas
+        </nuxt-link>
+      </li>
+      <li>
         <nuxt-link to="/sobre-nos" class="block p-3 rounded bg-blue-500 hover:bg-blue-800 transition-all">
           Sobre nós
         </nuxt-link>
