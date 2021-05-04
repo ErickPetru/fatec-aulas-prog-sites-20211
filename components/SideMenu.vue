@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="p-3 rounded flex flex-col"
+    class="flex flex-col p-3 rounded"
     :class="{
       'bg-black text-white': isDark,
       'bg-white text-black': !isDark
@@ -24,7 +24,10 @@
 export default {
   name: 'SideMenu',
   props: {
-    items: [],
+    items: {
+      type: Array,
+      default: () => []
+    },
     isDark: false
   },
   data () {
