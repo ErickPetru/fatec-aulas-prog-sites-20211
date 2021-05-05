@@ -31,7 +31,7 @@
         class="w-full max-w-screen-xl py-2 mt-6 bg-white border border-gray-400 divide-y divide-gray-300 shadow-lg rounded-xl"
       >
         <li
-          v-for="task of tasks"
+          v-for="task of sortedTasks"
           :key="task._id"
           tabindex="0"
           class="flex items-center px-4 py-2 transition-all outline-none cursor-pointer hover:bg-blue-200 focus:ring focus:ring-blue-300"
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+
 export default {
   data() {
     return {
@@ -69,11 +71,27 @@ export default {
     }
   },
 
+  mounted() {
+    const socket = io('http://localhost:8080')
+
+    socket.on('todo-created', created => {
+      this.tasks.push(created)
+    })
+
+    socket.on('todo-updated', updated => {
+      const task = this.tasks.find(t => t._id === updated._id)
+      task.done = updated.done
+    })
+
+    socket.on('todo-removed', removed => {
+      this.tasks = this.tasks.filter(t => t._id !== removed._id)
+    })
+  },
+
   async fetch() {
     try {
       this.waiting = true
       this.tasks = await this.$axios.$get('http://localhost:8080/todos')
-      this.tasks.forEach(t => t.createdAt = new Date(t.createdAt))
     } catch {
       alert('Opa, deu pau no carregamento.')
     } finally {
@@ -83,7 +101,18 @@ export default {
 
   filters: {
     dateFormat(value) {
+      if (typeof value === 'string') value = new Date(value)
       return value.toLocaleString('pt-BR')
+    }
+  },
+
+  computed: {
+    sortedTasks() {
+      // Se quiser ordenar em ordem alfabética:
+      // return this.tasks.sort((a, b) => a.text.localeCompare(b.text))
+
+      // Se quiser ordenar por data de criação:
+      return this.tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     }
   },
 
@@ -91,16 +120,12 @@ export default {
     async addTask() {
       try {
         this.waiting = true
-        const task = {
-          text: this.inputText,
-          createdAt: new Date()
-        }
-
+        const task = { text: this.inputText }
         await this.$axios.$post('http://localhost:8080/todos', task)
-        this.$fetch()
         this.inputText = ''
       } catch {
         alert('Opa, deu pau no envio.')
+      } finally {
         this.waiting = false
       }
     },
@@ -114,9 +139,9 @@ export default {
           updatedAt: new Date(),
           done: !task.done
         })
-        this.$fetch()
       } catch {
         alert('Opa, deu pau na atualização.')
+      } finally {
         this.waiting = false
       }
     },
@@ -125,9 +150,9 @@ export default {
       try {
         this.waiting = true
         await this.$axios.$delete(`http://localhost:8080/todos/${task._id}`)
-        this.$fetch()
       } catch {
         alert('Opa, deu pau na exclusão.')
+      } finally {
         this.waiting = false
       }
     }
