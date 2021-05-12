@@ -11,7 +11,9 @@
       <div class="p-3">
         <h2 class="text-lg font-bold text-blue-900">{{ title }}</h2>
         <p class="text-gray-700">{{ description }}</p>
-        <strong class="mt-2 text-2xl text-green-700">R$ {{ price }}</strong>
+        <strong class="mt-2 text-2xl text-green-700">
+          {{ $n(parseFloat(price), 'currency') }}
+        </strong>
       </div>
     </article>
   </nuxt-link>
@@ -20,6 +22,18 @@
 <script>
 export default {
   name: 'ProductCard',
+
+  // TODO: Ideia preliminar para lidar com cotação.
+  // Depende de uma API de cotação on-line real para funcionar.
+  // data() {
+  //   return {
+  //     priceConverted: ''
+  //   }
+  // },
+
+  // async fetch() {
+  //   this.priceConverted = await this.$axios.$get(`https://api.binance.com/${this.price}?from=BRL&to=USD`)
+  // },
 
   props: {
     path: {

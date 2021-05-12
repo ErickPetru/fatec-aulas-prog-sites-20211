@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-8 text-center">
-    <PageTitle>Produtos</PageTitle>
+  <div class="pb-8 mt-8 text-center">
+    <PageTitle>{{ $t('products') }}</PageTitle>
 
     <img :src="banner" height="200" class="object-cover w-full mt-4 mb-8 h-72">
 
@@ -33,7 +33,6 @@ export default {
   data () {
     return {
       banner: require('~/assets/img/weather-snowing.jpg'),
-
       currentPage: 1
     }
   },
@@ -58,9 +57,8 @@ export default {
   watch: {
     '$route.query': {
       immediate: true,
-
       handler (query) {
-        this.currentPage = query.page
+        this.currentPage = query.page || 1
       }
     }
   }

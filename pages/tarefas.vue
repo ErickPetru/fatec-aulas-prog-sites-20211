@@ -1,6 +1,6 @@
 <template>
-  <div class="grid p-4 place-items-center">
-    <h1 class="text-4xl font-bold">Tarefas</h1>
+  <div class="grid p-4 mt-4 place-items-center">
+    <PageTitle>{{ $t('tasks') }}</PageTitle>
 
     <img
       v-if="waiting"
@@ -16,18 +16,18 @@
         <input
           v-model="inputText"
           type="text"
-          placeholder="O que precisa ser feito?"
+          :placeholder="$t('whatNeedToBeDone')"
           class="w-full px-2 py-1 transition-all border border-gray-500 rounded outline-none focus:ring focus:ring-blue-300 hover:border-blue-900"
         >
         <button
           class="px-3 py-1 text-sm font-semibold text-white uppercase transition-all bg-blue-800 rounded outline-none hover:bg-blue-900 focus:outline-none focus:ring focus:ring-blue-300"
         >
-          Adicionar
+          {{ $t('add') }}
         </button>
       </form>
 
       <ul
-        v-if="tasks.length"
+        v-if="sortedTasks.length"
         class="w-full max-w-screen-xl py-2 mt-6 bg-white border border-gray-400 divide-y divide-gray-300 shadow-lg rounded-xl"
       >
         <li
@@ -51,10 +51,14 @@
               'text-gray-400': task.done
             }"
           >
-            {{ task.createdAt | dateFormat }}
+            {{ $d(new Date(task.createdAt), 'dateTime') }}
           </small>
         </li>
       </ul>
+
+      <p class="mt-6 text-sm text-gray-800">
+        {{ $tc('taskCount', sortedTasks.length) }}
+      </p>
     </template>
   </div>
 </template>
@@ -93,26 +97,22 @@ export default {
       this.waiting = true
       this.tasks = await this.$axios.$get('http://localhost:8080/todos')
     } catch {
-      alert('Opa, deu pau no carregamento.')
+      alert(this.$t('operationError'))
     } finally {
       this.waiting = false
     }
   },
 
-  filters: {
-    dateFormat(value) {
-      if (typeof value === 'string') value = new Date(value)
-      return value.toLocaleString('pt-BR')
-    }
-  },
-
   computed: {
     sortedTasks() {
+      // Filtrando tasks pelo idioma atual...
+      const tasksFiltered = this.tasks.filter((t) => t.locale === this.$i18n.locale || !t.locale)
+
       // Se quiser ordenar em ordem alfabética:
       // return this.tasks.sort((a, b) => a.text.localeCompare(b.text))
 
       // Se quiser ordenar por data de criação:
-      return this.tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      return tasksFiltered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     }
   },
 
@@ -120,11 +120,11 @@ export default {
     async addTask() {
       try {
         this.waiting = true
-        const task = { text: this.inputText }
+        const task = { text: this.inputText, locale: this.$i18n.locale }
         await this.$axios.$post('http://localhost:8080/todos', task)
         this.inputText = ''
       } catch {
-        alert('Opa, deu pau no envio.')
+        alert(this.$t('operationError'))
       } finally {
         this.waiting = false
       }
@@ -140,7 +140,7 @@ export default {
           done: !task.done
         })
       } catch {
-        alert('Opa, deu pau na atualização.')
+        alert(this.$t('operationError'))
       } finally {
         this.waiting = false
       }
@@ -151,7 +151,7 @@ export default {
         this.waiting = true
         await this.$axios.$delete(`http://localhost:8080/todos/${task._id}`)
       } catch {
-        alert('Opa, deu pau na exclusão.')
+        alert(this.$t('operationError'))
       } finally {
         this.waiting = false
       }

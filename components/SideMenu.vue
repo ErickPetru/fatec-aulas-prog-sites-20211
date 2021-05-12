@@ -1,12 +1,17 @@
 <template>
   <aside
-    class="flex flex-col p-3 rounded"
+    class="flex flex-col w-32 p-3 rounded"
     :class="{
       'bg-black text-white': isDark,
       'bg-white text-black': !isDark
     }"
   >
-    <PageTitle @action="onTitleClicked">Menu</PageTitle>
+    <h2 @action="onTitleClicked" class="mb-3 text-xl font-bold" :class="{
+      'text-green-300': isDark,
+      'text-green-800': !isDark
+    }">
+      {{ $t('sideOptions') }}
+    </h2>
 
     {{ message }}
 

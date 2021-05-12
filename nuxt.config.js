@@ -43,10 +43,86 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+
+    // https://i18n.nuxtjs.org/
+    'nuxt-i18n'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  // i18n module configuration: https://i18n.nuxtjs.org/options-reference
+  i18n: {
+    lazy: true,
+    detectBrowserLanguage: {
+      cookieKey: 'i18n-locale',
+    },
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    langDir: 'lang',
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+        file: 'en.js'
+      },
+      {
+        code: 'pt',
+        iso: 'pt-BR',
+        name: 'Português',
+        file: 'pt.js'
+      }
+    ],
+    vueI18n: {
+      fallbackLocale: 'en',
+      dateTimeFormats: {
+        en: {
+          date: {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+          },
+
+          dateTime: {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+          }
+        },
+
+        pt: {
+          date: {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          },
+
+          dateTime: {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric'
+          }
+        }
+      },
+      numberFormats: {
+        en: {
+          integer: { maximumFractionDigits: 0 },
+          float: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+          currency: { style: 'currency', currency: 'USD' }
+        },
+        pt: {
+          integer: { maximumFractionDigits: 0 },
+          float: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+          currency: { style: 'currency', currency: 'BRL' }
+        }
+      }
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

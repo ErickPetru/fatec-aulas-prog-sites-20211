@@ -12,6 +12,7 @@
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.3",
     "nuxt": "^2.15.3",
+    "nuxt-i18n": "^6.27.0",
     "socket.io-client": "^4.0.1"
   },
   "devDependencies": {
